@@ -176,6 +176,51 @@ $(document).on('click', '.product-consume-button', function(e)
 	);
 });
 
+$(document).on('click', '.product-add-button', function(e)
+{
+	e.preventDefault();
+
+	Grocy.FrontendHelpers.BeginUiBusy();
+
+	var productId = $(e.currentTarget).attr('data-product-id');
+	var consumeAmount = Number.parseFloat($(e.currentTarget).attr('data-add-amount'));
+	var originalTotalStockAmount = Number.parseFloat($(e.currentTarget).attr('data-original-total-stock-amount'));
+
+	Grocy.Api.Post('stock/products/' + productId + '/add', { 'amount': consumeAmount },
+		function(bookingResponse)
+		{
+			Grocy.Api.Get('stock/products/' + productId,
+				function(result)
+				{
+					if (result.product.enable_tare_weight_handling == 1)
+					{
+						var toastMessage = __t('Added %1$s of %2$s from stock', originalTotalStockAmount.toLocaleString({ minimumFractionDigits: 0, maximumFractionDigits: Grocy.UserSettings.stock_decimal_places_amounts }) + " " + __n(consumeAmount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true), result.product.name) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
+					}
+					else
+					{
+						var toastMessage = __t('Added %1$s of %2$s from stock', consumeAmount.toLocaleString({ minimumFractionDigits: 0, maximumFractionDigits: Grocy.UserSettings.stock_decimal_places_amounts }) + " " + __n(consumeAmount, result.quantity_unit_stock.name, result.quantity_unit_stock.name_plural, true), result.product.name) + '<br><a class="btn btn-secondary btn-sm mt-2" href="#" onclick="UndoStockTransaction(\'' + bookingResponse[0].transaction_id + '\')"><i class="fa-solid fa-undo"></i> ' + __t("Undo") + '</a>';
+					}
+
+					Grocy.FrontendHelpers.EndUiBusy();
+					toastr.success(toastMessage);
+					RefreshStatistics();
+					RefreshProductRow(productId);
+				},
+				function(xhr)
+				{
+					Grocy.FrontendHelpers.EndUiBusy();
+					console.error(xhr);
+				}
+			);
+		},
+		function(xhr)
+		{
+			Grocy.FrontendHelpers.EndUiBusy();
+			console.error(xhr);
+		}
+	);
+});
+
 $(document).on('click', '.product-open-button', function(e)
 {
 	e.preventDefault();
