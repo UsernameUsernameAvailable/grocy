@@ -220,6 +220,17 @@
 							data-original-total-stock-amount="{{$currentStockEntry->amount}}">
 							<i class="fa-solid fa-utensils"></i> {{ $__t('All') }}
 						</a>
+						<a class="btn btn-primary btn-sm product-add-button 
+							href="#"
+							data-toggle="tooltip"
+							data-placement="left"
+							title="{{ $__t('Add %1$s of %2$s', $currentStockEntry->quick_consume_amount_qu_consume . ' ' . $currentStockEntry->qu_consume_name, $currentStockEntry->product_name) }}"
+							data-product-id="{{ $currentStockEntry->product_id }}"
+							data-product-name="{{ $currentStockEntry->product_name }}"
+							data-product-qu-name="{{ $currentStockEntry->qu_stock_name }}"
+							data-add-amount="{{ $currentStockEntry->quick_consume_amount }}">
+							<i class="fa-solid fa-box"></i> <span class="locale-number locale-number-quantity-amount">{{ $currentStockEntry->quick_add_amount_qu_add }}</span>
+						</a>
 						@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING)
 						<a class="btn btn-success btn-sm product-open-button @if($currentStockEntry->amount_aggregated < $currentStockEntry->quick_open_amount || $currentStockEntry->amount_aggregated == $currentStockEntry->amount_opened_aggregated || $currentStockEntry->enable_tare_weight_handling == 1 || $currentStockEntry->disable_open == 1) disabled @endif"
 							href="#"
