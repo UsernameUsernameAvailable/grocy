@@ -231,9 +231,9 @@ $listItem->last_price_total = $listItem->price * $listItem->amount;
 			<tbody class="d-none">
 				@foreach($listItems as $listItem)
 				<tr id="shoppinglistitem-{{ $listItem->id }}-row"
-					class="@if(FindObjectInArrayByPropertyValue($missingProducts, 'id', $listItem->product_id) !== null) table-info @endif @if($listItem->done == 1) text-muted text-strike-through @endif">
+					class="@if(GROCY_FEATURE_FLAG_STOCK && FindObjectInArrayByPropertyValue($missingProducts, 'id', $listItem->product_id) !== null) table-info @endif @if($listItem->done == 1) text-muted text-strike-through @endif">
 					<td class="fit-content border-right">
-<a class="btn btn-warning btn-sm shoppinglist-star-button"
+						<a class="btn btn-warning btn-sm shoppinglist-star-button"
 							href="#"
 							data-item-id="{{ $listItem->id }}"
 							data-item-star="{{ $listItem->star }}"
