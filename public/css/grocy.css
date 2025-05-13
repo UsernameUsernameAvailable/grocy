@@ -302,7 +302,12 @@ a:not([href]) {
 	margin: 0;
 	border: none;
 	content: '\f107';
+font-weight: bold;
 	font-family: 'Font Awesome 6 Free';
+}
+
+.dropdown-toggle {
+	font-weight: bold;
 }
 
 /* Third party component customizations - DataTables */
@@ -350,6 +355,7 @@ tr.dtrg-group {
 /* Third party component customizations - Font Awesome */
 .fa-custom-sigma-sign:before {
 	content: "\03a3";
+font-weight: bold;
 	font-family: sans-serif;
 }
 
