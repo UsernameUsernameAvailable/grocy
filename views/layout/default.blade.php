@@ -36,6 +36,8 @@
 		rel="stylesheet">
 	<link href="{{ $U('/packages/@fortawesome/fontawesome-free/css/solid.min.css?v=', true) }}{{ $version }}"
 		rel="stylesheet">
+	<link href="{{ $U('/packages/@fortawesome/fontawesome-free/css/regular.min.css?v=', true) }}{{ $version }}"
+		rel="stylesheet">
 	<link href="{{ $U('/packages/toastr/build/toastr.min.css?v=', true) }}{{ $version }}"
 		rel="stylesheet">
 

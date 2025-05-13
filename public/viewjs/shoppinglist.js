@@ -364,6 +364,54 @@ $(document).on('click', '.order-listitem-button', function(e)
 	);
 });
 
+//
+$(document).on('click', '.shoppinglist-star-button', function(e)
+{
+	e.preventDefault();
+
+	Grocy.FrontendHelpers.BeginUiBusy();
+
+	var listItemId = $(e.currentTarget).attr('data-item-id');
+
+	var star = 1;
+	if ($(e.currentTarget).attr('data-item-star') == 1)
+	{
+		star = 0;
+	}
+
+	$(e.currentTarget).attr('data-item-star', star);
+
+	Grocy.Api.Put('objects/shopping_list/' + listItemId, { 'star': star },
+		function()
+		{
+			var statusInfoCell = $("#shoppinglistitem-" + listItemId + "-status-info");
+
+			if (star == 1)
+			{
+				$('#shoppinglistitem-' + listItemId + '-row i.fa-star').removeClass("fa-regular");
+				$('#shoppinglistitem-' + listItemId + '-row i.fa-star').addClass("fa-solid");
+				statusInfoCell.text(statusInfoCell.text().replace("xxUNSTARxx", "xxSTARxx"));
+			}
+			else
+			{
+				$('#shoppinglistitem-' + listItemId + '-row i.fa-star').removeClass("fa-solid");
+				$('#shoppinglistitem-' + listItemId + '-row i.fa-star').addClass("fa-regular");
+				statusInfoCell.text(statusInfoCell.text().replace("xxSTARxx", "xxUNSTARxx"));
+			}
+
+			shoppingListTable.rows().invalidate().draw(false);
+			$("#status-filter").trigger("change");
+
+			Grocy.FrontendHelpers.EndUiBusy();
+		},
+		function(xhr)
+		{
+			Grocy.FrontendHelpers.EndUiBusy();
+			console.error(xhr);
+		}
+	);
+});
+
 function OnListItemRemoved()
 {
 	if ($(".shopping-list-stock-add-workflow-list-item-button").length === 0)

@@ -181,6 +181,7 @@ $listItem->last_price_total = $listItem->price * $listItem->amount;
 					value="belowminstockamount">{{ $__t('Below min. stock amount') }}</option>
 				<option value="xxDONExx">{{ $__t('Only done items') }}</option>
 				<option value="xxUNDONExx">{{ $__t('Only undone items') }}</option>
+				<option value="xxSTARxx">{{ $__t('Only starred items') }}</option>
 			</select>
 		</div>
 	</div>
@@ -232,6 +233,15 @@ $listItem->last_price_total = $listItem->price * $listItem->amount;
 				<tr id="shoppinglistitem-{{ $listItem->id }}-row"
 					class="@if(FindObjectInArrayByPropertyValue($missingProducts, 'id', $listItem->product_id) !== null) table-info @endif @if($listItem->done == 1) text-muted text-strike-through @endif">
 					<td class="fit-content border-right">
+<a class="btn btn-warning btn-sm shoppinglist-star-button"
+							href="#"
+							data-item-id="{{ $listItem->id }}"
+							data-item-star="{{ $listItem->star }}"
+							data-toggle="tooltip"
+							data-placement="right"
+							title="{{ $__t('Mark this item as starred') }}">
+							<i class="fa-star @if($listItem->star == 1) fa-solid @else fa-regular @endif  "></i>
+						</a>
 						<a class="btn btn-success btn-sm order-listitem-button"
 							href="#"
 							data-item-id="{{ $listItem->id }}"
@@ -290,6 +300,7 @@ $listItem->last_price_total = $listItem->price * $listItem->amount;
 						class="d-none">
 						@if(FindObjectInArrayByPropertyValue($missingProducts, 'id', $listItem->product_id) !== null) belowminstockamount @endif
 						@if($listItem->done == 1) xxDONExx @else xxUNDONExx @endif
+						@if($listItem->star == 1) xxSTARxx @else xxUNSTARxx @endif
 					</td>
 					<td class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) d-none @endif">
 						<span class="locale-number locale-number-currency">{{ $listItem->last_price_unit }}</span>
